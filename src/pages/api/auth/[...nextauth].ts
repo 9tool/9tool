@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -16,11 +17,22 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    signIn(params) {
+      // console.log("signIn", { params });
+
+      return true;
+    },
+    // async jwt({ token, user, account, profile, isNewUser }) {
+    //   // console.log({ token, user, account, profile, isNewUser });
+
+    //   return token;
+    // },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
+      id: "discord",
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
@@ -34,10 +46,37 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
     GoogleProvider({
+      id: "google",
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope:
+            "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.readonly",
+        },
+      },
     }),
   ],
 };
 
-export default NextAuth(authOptions);
+export default async function auth(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
+  // console.log(req.query.nextauth);
+
+  const isDefaultSigninPage =
+    req.method === "GET" && req.query.nextauth!.includes("signin");
+  if (isDefaultSigninPage) {
+    authOptions.providers = authOptions.providers.filter(
+      (provider) => provider.id === "google"
+    );
+  }
+
+  return await NextAuth(
+    req,
+    res,
+    authOptions
+    // rest of your config ...
+  );
+}
