@@ -28,7 +28,13 @@ const Overlays: NextPage = () => {
       <ul className="list-disc">
         {overlays &&
           overlays.map((overlay) => {
-            return <li key={overlay.id}>{overlay.name}</li>;
+            return (
+              <li key={overlay.id}>
+                <Link href={`/overlays/${overlay.id}`} className="underline">
+                  {overlay.name}
+                </Link>
+              </li>
+            );
           })}
       </ul>
       <Link href="/" className="underline">
