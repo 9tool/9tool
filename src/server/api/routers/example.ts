@@ -27,4 +27,16 @@ export const exampleRouter = createTRPCRouter({
   getAdminSecretMessage: protectedAdminProcedure.query(() => {
     return "and you are admin!";
   }),
+
+  getIsDiscordConnected: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+    const discordAccount = await ctx.prisma.account.findFirst({
+      where: {
+        userId,
+        provider: "discord",
+      },
+    });
+
+    return !!discordAccount;
+  }),
 });
