@@ -5,7 +5,6 @@ import { api } from "../../utils/api";
 import { isAdmin } from "../../utils/lib";
 import SidebarLayout from "../../components/layouts/sidebar_layout";
 import { useRouter } from "next/router";
-import { Overlay } from "@prisma/client";
 
 const pages: Page[] = [
   { name: "Overlays", href: "/overlays", current: false },
@@ -16,12 +15,9 @@ const NewOverlay: NextPage = () => {
   const router = useRouter();
   const { data: sessionData, status } = useSession({
     required: true,
-    onUnauthenticated() {
-      router.replace("/api/auth/signin");
+    async onUnauthenticated() {
+      await router.replace("/api/auth/signin");
     },
-  });
-  const { data: overlays, isLoading } = api.overlay.getAll.useQuery(undefined, {
-    enabled: !isAdmin(sessionData),
   });
 
   if (status === "loading") {
@@ -54,6 +50,8 @@ const NewOverlay: NextPage = () => {
 export default NewOverlay;
 
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
+import { z } from "zod";
+import { useZodForm } from "../../utils/zod-form";
 
 interface Page {
   name: string;
@@ -95,9 +93,38 @@ function Breadcrumbs({ pages }: { pages: Page[] }) {
   );
 }
 
+export const overlayCreateSchema = z.object({
+  name: z.string().min(3).max(20),
+});
+
 const OverlayForm = () => {
+  const router = useRouter();
+  const utils = api.useContext();
+
+  const methods = useZodForm({
+    schema: overlayCreateSchema,
+  });
+  const createOverlay = api.overlay.create.useMutation({
+    // mutationFn: async (values) => console.log(values),
+    onSettled: () => {
+      utils.overlay.getAll.invalidate();
+      methods.reset();
+      router.replace("/overlays");
+    },
+  });
+
+  const onSubmit = methods.handleSubmit(
+    (data) => {
+      createOverlay.mutate(data);
+    },
+    (e) => {
+      console.log("Whoops... something went wrong!");
+      console.error(e);
+    }
+  );
+
   return (
-    <form className="space-y-8 divide-y divide-gray-200">
+    <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>
@@ -121,8 +148,7 @@ const OverlayForm = () => {
                 <input
                   required
                   type="text"
-                  name="name"
-                  id="name"
+                  {...methods.register("name")}
                   className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                   placeholder="Overlay name"
                 />
@@ -134,12 +160,12 @@ const OverlayForm = () => {
 
       <div className="pt-5">
         <div className="flex justify-end">
-          <button
-            type="button"
+          <Link
+            href="/overlays"
             className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Cancel
-          </button>
+          </Link>
           <button
             type="submit"
             className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

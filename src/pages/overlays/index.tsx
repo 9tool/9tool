@@ -16,7 +16,7 @@ const Overlays: NextPage = () => {
     },
   });
   const { data: overlays, isLoading } = api.overlay.getAll.useQuery(undefined, {
-    enabled: !isAdmin(sessionData),
+    // enabled: !isAdmin(sessionData), This makes utils.overlay.invalidate() not working
   });
 
   if (status === "loading") {

@@ -12,4 +12,10 @@ export const overlayRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.overlay.findUnique({ where: { id: input.id } });
     }),
+
+  create: protectedAdminProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.overlay.create({ data: input });
+    }),
 });
