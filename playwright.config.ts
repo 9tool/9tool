@@ -106,6 +106,7 @@ const config: PlaywrightTestConfig = {
     baseURL: baseUrl,
     headless: opts.headless,
   },
+  reporter: "html",
 };
 
 export default config;
