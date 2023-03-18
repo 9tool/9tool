@@ -18,4 +18,13 @@ export const overlayRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return ctx.prisma.overlay.create({ data: input });
     }),
+
+  update: protectedAdminProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.overlay.update({
+        data: input,
+        where: { id: input.id },
+      });
+    }),
 });
