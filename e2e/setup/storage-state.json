@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "next-auth.session-token",
+      "value": "87786bb3-8d24-44f5-b9b3-fba7d774c70a",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1679233169,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
