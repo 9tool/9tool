@@ -3,6 +3,7 @@
 import type { BrowserContext } from "@playwright/test";
 import { chromium } from "@playwright/test";
 import path from "node:path";
+import fs from "node:fs";
 
 import { prisma } from "~/server/db";
 
@@ -54,6 +55,10 @@ export default async function globalSetup() {
   });
 
   const storageState = path.resolve(__dirname, "storage-state.json");
+  if (!fs.existsSync(storageState)) {
+    const content = { cookies: [], origins: [] };
+    fs.writeFileSync(storageState, JSON.stringify(content));
+  }
   const browser = await chromium.launch();
   const context = await browser.newContext({ storageState });
   await context.addCookies([testCookie]);
