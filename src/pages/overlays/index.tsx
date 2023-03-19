@@ -109,12 +109,19 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                       {overlay.updatedAt.toISOString()}
                     </td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                    <td className="relative flex gap-4 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <Link
                         href={`/overlays/${overlay.id}/edit`}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         Edit<span className="sr-only">, {overlay.name}</span>
+                      </Link>
+                      <Link
+                        href={`/overlays/${overlay.id}/view?key=${overlay.key}`}
+                        className="text-indigo-600 hover:text-indigo-900"
+                        target="_blank"
+                      >
+                        View <span className="sr-only">, {overlay.name}</span>
                       </Link>
                     </td>
                   </tr>

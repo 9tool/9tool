@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedAdminProcedure,
+  publicProcedure,
+} from "../trpc";
 
 export const overlayRouter = createTRPCRouter({
   getAll: protectedAdminProcedure.query(({ ctx }) => {
@@ -12,6 +16,15 @@ export const overlayRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.overlay.findUnique({
         where: { id: input.id },
+        include: { items: true },
+      });
+    }),
+
+  getOneByKey: publicProcedure
+    .input(z.object({ id: z.string(), key: z.string() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.overlay.findFirst({
+        where: { id: input.id, key: input.key },
         include: { items: true },
       });
     }),
