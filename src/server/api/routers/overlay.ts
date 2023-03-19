@@ -10,7 +10,10 @@ export const overlayRouter = createTRPCRouter({
   getOne: protectedAdminProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input, ctx }) => {
-      return ctx.prisma.overlay.findUnique({ where: { id: input.id } });
+      return ctx.prisma.overlay.findUnique({
+        where: { id: input.id },
+        include: { items: true },
+      });
     }),
 
   create: protectedAdminProcedure

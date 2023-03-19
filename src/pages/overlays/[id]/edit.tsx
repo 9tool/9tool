@@ -5,7 +5,7 @@ import { api } from "../../../utils/api";
 import { isAdmin } from "../../../utils/lib";
 import SidebarLayout from "../../../components/layouts/sidebar_layout";
 import { useRouter } from "next/router";
-import { Overlay } from "@prisma/client";
+import { Overlay, OverlayItem } from "@prisma/client";
 
 const pages: Page[] = [{ name: "Overlays", href: "/overlays", current: false }];
 
@@ -70,6 +70,7 @@ export default NewOverlay;
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
 import { z } from "zod";
 import { useZodForm } from "../../../utils/zod-form";
+import { OverlayItemComponent } from "../../../components/OverlayItem";
 
 interface Page {
   name: string;
@@ -115,12 +116,15 @@ export const overlayCreateSchema = z.object({
   name: z.string().min(3).max(20),
 });
 
-const OverlayForm = ({ overlay }: { overlay: Overlay }) => {
+const OverlayForm = ({
+  overlay,
+}: {
+  overlay: Overlay & { items: OverlayItem[] };
+}) => {
   const router = useRouter();
 
   const id = router.query.id! as string;
   const utils = api.useContext();
-  console.log({ overlay });
 
   const methods = useZodForm({
     schema: overlayCreateSchema,
@@ -184,6 +188,57 @@ const OverlayForm = ({ overlay }: { overlay: Overlay }) => {
                     {methods.formState.errors.name?.message}
                   </p>
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+        <div className="space-y-6 sm:space-y-5">
+          <div>
+            <h3 className="text-base font-semibold leading-6 text-gray-900">
+              Overlay Items
+            </h3>
+          </div>
+          <div className="mt-8 flow-root">
+            <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <table className="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                      >
+                        Type
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Value
+                      </th>
+                      <th
+                        scope="col"
+                        className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Updated At
+                      </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-0"
+                      >
+                        <span className="sr-only">Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {overlay.items.map((item) => (
+                      <OverlayItemComponent item={item} key={item.id} />
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
