@@ -30,6 +30,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -38,6 +39,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -60,9 +63,27 @@ model VerificationToken {
 }
 
 model Overlay {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  key       String   @default(uuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  key       String        @default(uuid())
+  items     OverlayItem[]
+}
+
+model OverlayItem {
+  id        String          @id @default(cuid())
+  type      OverlayItemType @default(TEXT)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  overlayId String
+  value     String
+  overlay   Overlay         @relation(fields: [overlayId], references: [id])
+
+  @@index([overlayId])
+}
+
+enum OverlayItemType {
+  TEXT
+  IMAGE
 }
