@@ -195,11 +195,19 @@ const OverlayForm = ({
       </div>
 
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
-        <div className="space-y-6 sm:space-y-5">
-          <div>
-            <h3 className="text-base font-semibold leading-6 text-gray-900">
+        <div className="mt-8 space-y-6 sm:space-y-5">
+          <div className="sm:flex sm:items-center">
+            <h3 className="text-base font-semibold leading-6 text-gray-900 sm:flex-auto">
               Overlay Items
             </h3>
+            <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+              <Link
+                href={`/overlays/${id}/items/new`}
+                className="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Add Item
+              </Link>
+            </div>
           </div>
           <div className="mt-8 flow-root">
             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
