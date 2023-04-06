@@ -47,6 +47,20 @@ const Overlays: NextPage = () => {
 export default Overlays;
 
 function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
+  const utils = api.useContext();
+
+  const deleteOverlay = api.overlay.delete.useMutation({
+    onSettled: () => {
+      utils.overlay.getAll.invalidate();
+    },
+  });
+
+  function confirmDeleteOverlay(id: string) {
+    if (confirm("Are you sure you want to delete this overlay?")) {
+      deleteOverlay.mutate({ id: id });
+    }
+  }
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -59,17 +73,17 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
             email and role.
           </p> */}
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <Link
             href="/overlays/new"
-            className="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Add overlay
           </Link>
         </div>
       </div>
       <div className="mt-8 flow-root">
-        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
@@ -82,13 +96,13 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     Key
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     Updated At
                   </th>
@@ -103,10 +117,10 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {overlay.name}
                     </td>
-                    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {overlay.key}
                     </td>
-                    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {overlay.updatedAt.toISOString()}
                     </td>
                     <td className="relative flex gap-4 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
@@ -123,6 +137,12 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
                       >
                         View <span className="sr-only">, {overlay.name}</span>
                       </Link>
+                      <button
+                        className="text-red-600 hover:text-red-900"
+                        onClick={() => confirmDeleteOverlay(overlay.id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}

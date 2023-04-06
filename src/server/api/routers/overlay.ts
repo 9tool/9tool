@@ -43,4 +43,12 @@ export const overlayRouter = createTRPCRouter({
         where: { id: input.id },
       });
     }),
+
+  delete: protectedAdminProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.overlay.delete({
+        where: { id: input.id },
+      });
+    }),
 });
