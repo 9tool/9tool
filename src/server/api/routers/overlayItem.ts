@@ -7,14 +7,13 @@ export const overlayItemRouter = createTRPCRouter({
   //   return ctx.prisma.overlayItem.findMany();
   // }),
 
-  // getOne: protectedAdminProcedure
-  //   .input(z.object({ id: z.string() }))
-  //   .query(({ input, ctx }) => {
-  //     return ctx.prisma.overlayItem.findUnique({
-  //       where: { id: input.id },
-  //       include: { items: true },
-  //     });
-  //   }),
+  getOne: protectedAdminProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.overlayItem.findUnique({
+        where: { id: input.id },
+      });
+    }),
 
   create: protectedAdminProcedure
     .input(
@@ -29,10 +28,24 @@ export const overlayItemRouter = createTRPCRouter({
     }),
 
   update: protectedAdminProcedure
-    .input(z.object({ id: z.string(), name: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+        value: z.string(),
+        type: z.enum(["TEXT", "IMAGE"]),
+      })
+    )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.overlayItem.update({
         data: input,
+        where: { id: input.id },
+      });
+    }),
+
+  delete: protectedAdminProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.overlayItem.delete({
         where: { id: input.id },
       });
     }),

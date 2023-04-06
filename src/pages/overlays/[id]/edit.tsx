@@ -67,50 +67,10 @@ const NewOverlay: NextPage = () => {
 
 export default NewOverlay;
 
-import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
 import { z } from "zod";
 import { useZodForm } from "../../../utils/zod-form";
 import { OverlayItemComponent } from "../../../components/OverlayItem";
-
-interface Page {
-  name: string;
-  href: string;
-  current: boolean;
-}
-
-function Breadcrumbs({ pages }: { pages: Page[] }) {
-  return (
-    <nav className="flex" aria-label="Breadcrumb">
-      <ol role="list" className="flex items-center space-x-4">
-        <li>
-          <div>
-            <a href="#" className="text-gray-400 hover:text-gray-500">
-              <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <span className="sr-only">Home</span>
-            </a>
-          </div>
-        </li>
-        {pages.map((page) => (
-          <li key={page.name}>
-            <div className="flex items-center">
-              <ChevronRightIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                aria-hidden="true"
-              />
-              <Link
-                href={page.href}
-                className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                aria-current={page.current ? "page" : undefined}
-              >
-                {page.name}
-              </Link>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
-}
+import { Page, Breadcrumbs } from "~/components/Breadcrumbs";
 
 export const overlayCreateSchema = z.object({
   name: z.string().min(3).max(20),
@@ -200,17 +160,17 @@ const OverlayForm = ({
             <h3 className="text-base font-semibold leading-6 text-gray-900 sm:flex-auto">
               Overlay Items
             </h3>
-            <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <Link
                 href={`/overlays/${id}/items/new`}
-                className="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Add Item
               </Link>
             </div>
           </div>
           <div className="mt-8 flow-root">
-            <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead>
@@ -223,13 +183,13 @@ const OverlayForm = ({
                       </th>
                       <th
                         scope="col"
-                        className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         Value
                       </th>
                       <th
                         scope="col"
-                        className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         Updated At
                       </th>
@@ -257,13 +217,13 @@ const OverlayForm = ({
         <div className="flex justify-end">
           <Link
             href="/overlays"
-            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Cancel
           </Link>
           <button
             type="submit"
-            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Save
           </button>
