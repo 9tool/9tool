@@ -11,10 +11,12 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
     },
   });
 
-  function confirmDeleteOverlayItem(e: MouseEvent, id: string) {
+  function confirmDeleteOverlayItem(
+    e: React.MouseEvent<HTMLButtonElement>
+  ): void {
     e.preventDefault();
     if (confirm("Are you sure you want to delete this overlay item?")) {
-      deleteOverlayItem.mutate({ id });
+      deleteOverlayItem.mutate({ id: item.id });
     }
   }
 
@@ -44,7 +46,7 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
         </Link>
         <button
           className="text-red-600 hover:text-red-900"
-          onClick={(e) => confirmDeleteOverlayItem(e, item.id)}
+          onClick={confirmDeleteOverlayItem}
         >
           Delete
         </button>
