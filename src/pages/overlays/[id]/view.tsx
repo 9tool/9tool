@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import Image from "next/image";
 import { api } from "../../../utils/api";
 import { useRouter } from "next/router";
 

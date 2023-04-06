@@ -116,10 +116,7 @@ const OverlayForm = ({
   );
 
   return (
-    <form
-      className="space-y-8 divide-y divide-gray-200"
-      onSubmit={() => void onSubmit()}
-    >
+    <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>
