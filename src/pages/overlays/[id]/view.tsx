@@ -60,7 +60,8 @@ export function Carousel({ items }: { items: OverlayItem[] }) {
             onClick={() => slideToNextItem()}
           >
             {i.type === "IMAGE" && (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 alt=""
                 className="h-full w-full object-contain"
                 src={i.value}

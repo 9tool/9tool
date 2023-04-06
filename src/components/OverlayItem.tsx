@@ -31,7 +31,7 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
         {/* If type is IMAGE, preview the value as image */}
         {item.type === "IMAGE" && (
           <span className="flex h-20 w-20 items-center bg-black p-2">
-            <Image alt="" src={item.value} />
+            <img alt="" src={item.value} width={80} height={80} />)
           </span>
         )}
       </td>
