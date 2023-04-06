@@ -97,6 +97,8 @@ const OverlayItemForm = () => {
     }
   );
 
+  const typeValue = methods.watch("type");
+
   return (
     <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
@@ -143,6 +145,11 @@ const OverlayItemForm = () => {
                   className="block w-full max-w-lg rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
                   placeholder="Value"
                 />
+                {typeValue === "IMAGE" && (
+                  <div className="mt-1 sm:col-span-2">
+                    <p className="text-sm text-gray-500">Enter image URL</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

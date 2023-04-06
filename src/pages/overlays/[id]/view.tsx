@@ -12,7 +12,7 @@ const ViewOverlayPage: NextPage = () => {
 
   if (overlayStatus === "loading") {
     return (
-      <main className="flex h-[100svh] w-full items-center justify-center">
+      <main className="flex h-[100svh] w-full items-center justify-center bg-black text-6xl text-white">
         <p>Loading...</p>
       </main>
     );
@@ -20,7 +20,7 @@ const ViewOverlayPage: NextPage = () => {
 
   if (!overlay) {
     return (
-      <main className="flex h-[100svh] w-full items-center justify-center">
+      <main className="flex h-[100svh] w-full items-center justify-center bg-black text-6xl text-white">
         <p>Overlay Not Found.</p>
       </main>
     );
@@ -28,7 +28,7 @@ const ViewOverlayPage: NextPage = () => {
 
   if (overlay && !overlay.items.length) {
     return (
-      <main className="flex h-[100svh] w-full items-center justify-center">
+      <main className="flex h-[100svh] w-full items-center justify-center bg-black text-6xl text-white">
         <p>No overlay items, please add at least one item</p>
       </main>
     );
@@ -63,7 +63,7 @@ export function Carousel({ items }: { items: OverlayItem[] }) {
           id: i.id,
           renderItem: (
             <div
-              className="flex h-full w-full items-center justify-center"
+              className="flex h-full w-full items-center justify-center p-8"
               onClick={() => slideToNextItem()}
             >
               {i.type === "IMAGE" && (
