@@ -23,8 +23,14 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
         {item.type}
       </td>
-      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+      <td className="flex items-center gap-4 whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {item.value}
+        {/* If type is IMAGE, preview the value as image */}
+        {item.type === "IMAGE" && (
+          <span className="flex h-20 w-20 items-center bg-black p-2">
+            <img className="" src={item.value} />
+          </span>
+        )}
       </td>
       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
         {item.updatedAt.toISOString()}
