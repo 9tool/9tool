@@ -1,11 +1,6 @@
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { api } from "../../../utils/api";
-import { isAdmin } from "../../../utils/lib";
-import SidebarLayout from "../../../components/layouts/sidebar_layout";
 import { useRouter } from "next/router";
-import { Overlay, OverlayItem } from "@prisma/client";
 
 const ViewOverlayPage: NextPage = () => {
   const router = useRouter();
@@ -13,31 +8,75 @@ const ViewOverlayPage: NextPage = () => {
   const key = router.query.key! as string;
 
   const { data: overlay, status: overlayStatus } =
-    api.overlay.getOneByKey.useQuery({ id, key });
+    api.overlay.getOneByKey.useQuery({ id, key }, { enabled: !!id && !!key });
 
   if (overlayStatus === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <main className="flex h-[100svh] w-full items-center justify-center">
+        <p>Loading...</p>
+      </main>
+    );
   }
 
   if (!overlay) {
-    return <p>Overlay Not Found.</p>;
+    return (
+      <main className="flex h-[100svh] w-full items-center justify-center">
+        <p>Overlay Not Found.</p>
+      </main>
+    );
+  }
+
+  if (overlay && !overlay.items.length) {
+    return (
+      <main className="flex h-[100svh] w-full items-center justify-center">
+        <p>No overlay items, please add at least one item</p>
+      </main>
+    );
   }
 
   return (
-    <main>
-      {overlay && (
-        <div className="p-8">
-          <h1 className="text-xl">Overlay ID: {overlay.id}</h1>
-          <p>Items:</p>
-          <ul className="list-disc">
-            {overlay.items.map((item) => {
-              return <li key={item.id}>{item.value}</li>;
-            })}
-          </ul>
-        </div>
-      )}
+    <main className="h-[100svh] w-screen bg-black text-white">
+      {overlay && <Carousel items={[...overlay.items]} />}
     </main>
   );
 };
+
+import { useTransitionCarousel } from "react-spring-carousel";
+import { OverlayItem } from "@prisma/client";
+import { useEffect } from "react";
+
+export function Carousel({ items }: { items: OverlayItem[] }) {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      slideToNextItem();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  });
+
+  const { carouselFragment, slideToPrevItem, slideToNextItem } =
+    useTransitionCarousel({
+      withLoop: true,
+
+      items: items.map((i, idx) => {
+        return {
+          id: i.id,
+          renderItem: (
+            <div
+              className="flex h-full w-full items-center justify-center"
+              onClick={() => slideToNextItem()}
+            >
+              {i.type === "IMAGE" && (
+                <img className="h-full w-full object-contain" src={i.value} />
+              )}
+              {i.type === "TEXT" && <span className="text-6xl">{i.value}</span>}
+            </div>
+          ),
+        };
+      }),
+    });
+
+  return carouselFragment;
+}
 
 export default ViewOverlayPage;
