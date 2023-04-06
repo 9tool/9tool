@@ -122,7 +122,7 @@ export default function SidebarLayout({
                     </nav>
                   </div>
                   <div className="flex flex-shrink-0 border-t border-indigo-800 p-4">
-                    <a href="#" className="group block flex-shrink-0">
+                    <Link href="/" className="group block flex-shrink-0">
                       <div className="flex items-center">
                         <div>
                           <img
@@ -136,11 +136,11 @@ export default function SidebarLayout({
                             {session.user?.name ?? "User"}
                           </p>
                           <p className="text-sm font-medium text-indigo-200 group-hover:text-white">
-                            View profile
+                            &lt; Home
                           </p>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -186,7 +186,7 @@ export default function SidebarLayout({
               </nav>
             </div>
             <div className="flex flex-shrink-0 border-t border-indigo-800 p-4">
-              <a href="#" className="group block w-full flex-shrink-0">
+              <Link href="/" className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
                   {/* <div>
                     <img
@@ -200,11 +200,11 @@ export default function SidebarLayout({
                       {session.user?.name ?? "User"}
                     </p>
                     <p className="text-xs font-medium text-indigo-200 group-hover:text-white">
-                      View profile
+                      &lt; Home
                     </p>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
