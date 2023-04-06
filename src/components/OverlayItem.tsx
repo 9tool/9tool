@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { OverlayItem } from "@prisma/client";
+import Image from "next/image";
+import type { OverlayItem } from "@prisma/client";
 import { api } from "~/utils/api";
 
 export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
@@ -7,7 +8,7 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
 
   const deleteOverlayItem = api.overlayItem.delete.useMutation({
     onSettled: () => {
-      utils.overlay.getOne.invalidate();
+      void utils.overlay.getOne.invalidate();
     },
   });
 
@@ -30,7 +31,7 @@ export const OverlayItemComponent = ({ item }: { item: OverlayItem }) => {
         {/* If type is IMAGE, preview the value as image */}
         {item.type === "IMAGE" && (
           <span className="flex h-20 w-20 items-center bg-black p-2">
-            <img className="" src={item.value} />
+            <Image alt="" src={item.value} />
           </span>
         )}
       </td>

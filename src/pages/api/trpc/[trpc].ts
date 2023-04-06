@@ -10,6 +10,7 @@ export default createNextApiHandler({
   createContext: createTRPCContext,
   onError: ({ path, error }) => {
     if (env.NODE_ENV === "development") {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       console.error(`❌ tRPC failed on ${path}`);
     }
     console.error(error);

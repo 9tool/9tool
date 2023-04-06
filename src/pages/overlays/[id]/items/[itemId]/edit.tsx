@@ -51,7 +51,8 @@ export default EditOverlayItem;
 
 import { z } from "zod";
 import { useZodForm } from "~/utils/zod-form";
-import { Breadcrumbs, Page } from "~/components/Breadcrumbs";
+import type { Page } from "~/components/Breadcrumbs";
+import { Breadcrumbs } from "~/components/Breadcrumbs";
 
 export const overlayItemSchema = z.object({
   type: z.enum(["TEXT", "IMAGE"]),
@@ -78,9 +79,9 @@ const OverlayItemForm = () => {
   });
   const updateOverlayItem = api.overlayItem.update.useMutation({
     onSettled: () => {
-      utils.overlay.getAll.invalidate();
+      void utils.overlay.getAll.invalidate();
       methods.reset();
-      router.replace(`/overlays/${router.query.id}/edit`);
+      void router.replace(`/overlays/${router.query.id! as string}/edit`);
     },
   });
 
@@ -100,7 +101,10 @@ const OverlayItemForm = () => {
   const typeValue = methods.watch("type");
 
   return (
-    <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
+    <form
+      className="space-y-8 divide-y divide-gray-200"
+      onSubmit={() => void onSubmit()}
+    >
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>
@@ -159,7 +163,7 @@ const OverlayItemForm = () => {
       <div className="pt-5">
         <div className="flex justify-end">
           <Link
-            href={`/overlays/${router.query.id}/edit`}
+            href={`/overlays/${router.query.id! as string}/edit`}
             className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Cancel

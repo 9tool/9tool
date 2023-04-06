@@ -107,9 +107,9 @@ const OverlayForm = () => {
   const createOverlay = api.overlay.create.useMutation({
     // mutationFn: async (values) => console.log(values),
     onSettled: () => {
-      utils.overlay.getAll.invalidate();
+      void utils.overlay.getAll.invalidate();
       methods.reset();
-      router.replace("/overlays");
+      void router.replace("/overlays");
     },
   });
 
@@ -124,7 +124,10 @@ const OverlayForm = () => {
   );
 
   return (
-    <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
+    <form
+      className="space-y-8 divide-y divide-gray-200"
+      onSubmit={void onSubmit}
+    >
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>
@@ -162,13 +165,13 @@ const OverlayForm = () => {
         <div className="flex justify-end">
           <Link
             href="/overlays"
-            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Cancel
           </Link>
           <button
             type="submit"
-            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Save
           </button>

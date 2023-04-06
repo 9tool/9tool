@@ -5,7 +5,7 @@ import { api } from "../../../utils/api";
 import { isAdmin } from "../../../utils/lib";
 import SidebarLayout from "../../../components/layouts/sidebar_layout";
 import { useRouter } from "next/router";
-import { Overlay, OverlayItem } from "@prisma/client";
+import type { Overlay, OverlayItem } from "@prisma/client";
 
 const pages: Page[] = [{ name: "Overlays", href: "/overlays", current: false }];
 
@@ -44,7 +44,7 @@ const NewOverlay: NextPage = () => {
               ...pages,
               {
                 name: "Edit overlay",
-                href: `/overlays/${router.query.id}/edit`,
+                href: `/overlays/${router.query.id as string}/edit`,
                 current: true,
               },
             ]}
@@ -56,7 +56,7 @@ const NewOverlay: NextPage = () => {
         <div className="mx-auto my-4 max-w-7xl px-4 sm:px-6 lg:px-8">
         </div> */}
         <div className="mt-6 px-6">
-          {(overlay && <OverlayForm overlay={overlay!} />) || (
+          {(overlay && <OverlayForm overlay={overlay} />) || (
             <p>Overlay Not Found.</p>
           )}
         </div>
@@ -70,7 +70,8 @@ export default NewOverlay;
 import { z } from "zod";
 import { useZodForm } from "../../../utils/zod-form";
 import { OverlayItemComponent } from "../../../components/OverlayItem";
-import { Page, Breadcrumbs } from "~/components/Breadcrumbs";
+import type { Page } from "~/components/Breadcrumbs";
+import { Breadcrumbs } from "~/components/Breadcrumbs";
 
 export const overlayCreateSchema = z.object({
   name: z.string().min(3).max(20),
@@ -96,9 +97,9 @@ const OverlayForm = ({
   const updateOverlay = api.overlay.update.useMutation({
     // mutationFn: async (values) => console.log(values),
     onSettled: () => {
-      utils.overlay.getAll.invalidate();
+      void utils.overlay.getAll.invalidate();
       methods.reset();
-      router.replace("/overlays");
+      void router.replace("/overlays");
     },
     onError: (e) => {
       console.error(e);
@@ -115,7 +116,10 @@ const OverlayForm = ({
   );
 
   return (
-    <form className="space-y-8 divide-y divide-gray-200" onSubmit={onSubmit}>
+    <form
+      className="space-y-8 divide-y divide-gray-200"
+      onSubmit={() => void onSubmit()}
+    >
       <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
         <div className="space-y-6 sm:space-y-5">
           <div>

@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import Image from "next/image";
 import { api } from "../../../utils/api";
 import { useRouter } from "next/router";
 
@@ -42,39 +43,43 @@ const ViewOverlayPage: NextPage = () => {
 };
 
 import { useTransitionCarousel } from "react-spring-carousel";
-import { OverlayItem } from "@prisma/client";
+import type { OverlayItem } from "@prisma/client";
 import { useEffect } from "react";
 
 export function Carousel({ items }: { items: OverlayItem[] }) {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  const { carouselFragment, slideToNextItem } = useTransitionCarousel({
+    withLoop: true,
+
+    items: items.map((i) => {
+      return {
+        id: i.id,
+        renderItem: (
+          <div
+            className="flex h-full w-full items-center justify-center p-8"
+            onClick={() => slideToNextItem()}
+          >
+            {i.type === "IMAGE" && (
+              <Image
+                alt=""
+                className="h-full w-full object-contain"
+                src={i.value}
+              />
+            )}
+            {i.type === "TEXT" && <span className="text-6xl">{i.value}</span>}
+          </div>
+        ),
+      };
+    }),
+  });
+
   useEffect(() => {
     const interval = setInterval(() => {
       slideToNextItem();
     }, 5000);
 
     return () => clearInterval(interval);
-  });
-
-  const { carouselFragment, slideToPrevItem, slideToNextItem } =
-    useTransitionCarousel({
-      withLoop: true,
-
-      items: items.map((i, idx) => {
-        return {
-          id: i.id,
-          renderItem: (
-            <div
-              className="flex h-full w-full items-center justify-center p-8"
-              onClick={() => slideToNextItem()}
-            >
-              {i.type === "IMAGE" && (
-                <img className="h-full w-full object-contain" src={i.value} />
-              )}
-              {i.type === "TEXT" && <span className="text-6xl">{i.value}</span>}
-            </div>
-          ),
-        };
-      }),
-    });
+  }, [slideToNextItem]);
 
   return carouselFragment;
 }

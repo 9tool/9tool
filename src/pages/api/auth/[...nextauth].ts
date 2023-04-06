@@ -62,7 +62,7 @@ export const authOptions: NextAuthOptions = {
 
 export default async function auth(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<unknown>
 ) {
   // console.log(req.query.nextauth);
 
@@ -74,6 +74,7 @@ export default async function auth(
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return await NextAuth(
     req,
     res,

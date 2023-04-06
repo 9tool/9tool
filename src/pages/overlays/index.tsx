@@ -12,7 +12,7 @@ const Overlays: NextPage = () => {
   const { data: sessionData, status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.replace("/api/auth/signin");
+      void router.replace("/api/auth/signin");
     },
   });
   const { data: overlays, isLoading } = api.overlay.getAll.useQuery(undefined, {
@@ -51,7 +51,7 @@ function OverlaysTable({ overlays }: { overlays: Overlay[] }) {
 
   const deleteOverlay = api.overlay.delete.useMutation({
     onSettled: () => {
-      utils.overlay.getAll.invalidate();
+      void utils.overlay.getAll.invalidate();
     },
   });
 
