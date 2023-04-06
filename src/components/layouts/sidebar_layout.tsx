@@ -77,7 +77,7 @@ export default function SidebarLayout({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <div className="absolute top-0 right-0 -mr-12 pt-2">
+                    <div className="absolute right-0 top-0 -mr-12 pt-2">
                       <button
                         type="button"
                         className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -91,7 +91,7 @@ export default function SidebarLayout({
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+                  <div className="h-0 flex-1 overflow-y-auto pb-4 pt-5">
                     <div className="flex flex-shrink-0 items-center px-4">
                       {/* <img
                         className="h-8 w-auto"
@@ -155,7 +155,7 @@ export default function SidebarLayout({
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col bg-indigo-700">
-            <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
+            <div className="flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
               <div className="flex flex-shrink-0 items-center px-4">
                 {/* <img
                   className="h-8 w-auto"
@@ -188,13 +188,13 @@ export default function SidebarLayout({
             <div className="flex flex-shrink-0 border-t border-indigo-800 p-4">
               <a href="#" className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
-                  <div>
+                  {/* <div>
                     <img
                       className="inline-block h-9 w-9 rounded-full"
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                       alt=""
                     />
-                  </div>
+                  </div> */}
                   <div className="ml-3">
                     <p className="text-sm font-medium text-white">
                       {session.user?.name ?? "User"}
