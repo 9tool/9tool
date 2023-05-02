@@ -69,6 +69,7 @@ model Overlay {
   updatedAt DateTime      @updatedAt
   key       String        @default(uuid())
   items     OverlayItem[]
+  type      OverlayType   @default(SLIDES)
 }
 
 model OverlayItem {
@@ -86,4 +87,9 @@ model OverlayItem {
 enum OverlayItemType {
   TEXT
   IMAGE
+}
+
+enum OverlayType {
+  SLIDES
+  YOUTUBE_LIVE_CHAT
 }

@@ -30,13 +30,24 @@ export const overlayRouter = createTRPCRouter({
     }),
 
   create: protectedAdminProcedure
-    .input(z.object({ name: z.string() }))
+    .input(
+      z.object({
+        name: z.string(),
+        type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
+      })
+    )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.overlay.create({ data: input });
     }),
 
   update: protectedAdminProcedure
-    .input(z.object({ id: z.string(), name: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
+      })
+    )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.overlay.update({
         data: input,

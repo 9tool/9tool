@@ -75,6 +75,7 @@ import { Breadcrumbs } from "~/components/Breadcrumbs";
 
 export const overlayCreateSchema = z.object({
   name: z.string().min(3).max(20),
+  type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]), // TODO: Use OverlayType enum
 });
 
 const OverlayForm = ({
@@ -149,6 +150,26 @@ const OverlayForm = ({
                     {methods.formState.errors.name?.message}
                   </p>
                 )}
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6 sm:space-y-5">
+            <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+              <label
+                htmlFor="type"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Type
+              </label>
+              <div className="mt-1 sm:col-span-2 sm:mt-0">
+                <select
+                  id="type"
+                  className="block w-full max-w-lg rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  {...methods.register("type", { required: true })}
+                >
+                  <option value="SLIDES">Slides</option>
+                  <option value="YOUTUBE_LIVE_CHAT">Youtube Live Chat</option>
+                </select>
               </div>
             </div>
           </div>
