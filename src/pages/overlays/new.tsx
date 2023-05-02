@@ -97,6 +97,8 @@ function Breadcrumbs({ pages }: { pages: Page[] }) {
 export const overlayCreateSchema = z.object({
   name: z.string().min(3).max(20),
   type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]), // TODO: Use OverlayType enum
+  // metadata: z.record(z.string().min(1), z.union([z.string(), z.number()])),
+  metadata: z.string(),
 });
 
 const OverlayForm = () => {
@@ -117,7 +119,11 @@ const OverlayForm = () => {
 
   const onSubmit = methods.handleSubmit(
     (data) => {
-      createOverlay.mutate(data);
+      // data["metadata"] = JSON.parse(data.metadata) as Record<string, string | number>;
+      createOverlay.mutate({
+        ...data,
+        metadata: JSON.parse(data.metadata) as Record<string, string | number>,
+      });
     },
     (e) => {
       console.log("Whoops... something went wrong!");
@@ -174,6 +180,23 @@ const OverlayForm = () => {
                   <option value="SLIDES">Slides</option>
                   <option value="YOUTUBE_LIVE_CHAT">Youtube Live Chat</option>
                 </select>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6 sm:space-y-5">
+            <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+              <label
+                htmlFor="metadata"
+                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+              >
+                Metadata
+              </label>
+              <div className="mt-1 sm:col-span-2 sm:mt-0">
+                <textarea
+                  id="metadata"
+                  className="block w-full max-w-lg rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  {...methods.register("metadata", { required: true })}
+                ></textarea>
               </div>
             </div>
           </div>

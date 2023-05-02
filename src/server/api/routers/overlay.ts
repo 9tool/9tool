@@ -34,6 +34,10 @@ export const overlayRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
+        metadata: z.record(
+          z.string().min(1),
+          z.union([z.string(), z.number()])
+        ),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -46,6 +50,10 @@ export const overlayRouter = createTRPCRouter({
         id: z.string(),
         name: z.string(),
         type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
+        metadata: z.record(
+          z.string().min(1),
+          z.union([z.string(), z.number()])
+        ),
       })
     )
     .mutation(({ input, ctx }) => {

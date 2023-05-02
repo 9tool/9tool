@@ -70,6 +70,7 @@ model Overlay {
   key       String        @default(uuid())
   items     OverlayItem[]
   type      OverlayType   @default(SLIDES)
+  metadata  Json          @default("{}")
 }
 
 model OverlayItem {
