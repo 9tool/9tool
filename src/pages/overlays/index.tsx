@@ -5,7 +5,7 @@ import { api } from "../../utils/api";
 import { isAdmin } from "../../utils/lib";
 import SidebarLayout from "../../components/layouts/sidebar_layout";
 import { useRouter } from "next/router";
-import { Overlay } from "@prisma/client";
+import type { Overlay } from "@prisma/client";
 
 const Overlays: NextPage = () => {
   const router = useRouter();

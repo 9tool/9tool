@@ -5,6 +5,8 @@ import {
   protectedAdminProcedure,
   publicProcedure,
 } from "../trpc";
+import { overlayCreateSchema } from "~/utils/schemas/overlay";
+import type { Prisma } from "@prisma/client";
 
 export const overlayRouter = createTRPCRouter({
   getAll: protectedAdminProcedure.query(({ ctx }) => {
@@ -30,35 +32,30 @@ export const overlayRouter = createTRPCRouter({
     }),
 
   create: protectedAdminProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
-        metadata: z.record(
-          z.string().min(1),
-          z.union([z.string(), z.number()])
-        ),
-      })
-    )
+    .input(overlayCreateSchema)
     .mutation(({ input, ctx }) => {
-      return ctx.prisma.overlay.create({ data: input });
+      return ctx.prisma.overlay.create({
+        data: {
+          ...input,
+          metadata: JSON.parse(input.metadata) as Prisma.JsonObject,
+        },
+      });
     }),
 
   update: protectedAdminProcedure
     .input(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]),
-        metadata: z.record(
-          z.string().min(1),
-          z.union([z.string(), z.number()])
-        ),
-      })
+      overlayCreateSchema.merge(
+        z.object({
+          id: z.string(),
+        })
+      )
     )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.overlay.update({
-        data: input,
+        data: {
+          ...input,
+          metadata: JSON.parse(input.metadata) as Prisma.JsonObject,
+        },
         where: { id: input.id },
       });
     }),

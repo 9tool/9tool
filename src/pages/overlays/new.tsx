@@ -50,9 +50,8 @@ const NewOverlay: NextPage = () => {
 export default NewOverlay;
 
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
-import { z } from "zod";
 import { useZodForm } from "../../utils/zod-form";
-// import type { OverlayType } from "@prisma/client";
+import { overlayCreateSchema } from "~/utils/schemas/overlay";
 
 interface Page {
   name: string;
@@ -94,13 +93,6 @@ function Breadcrumbs({ pages }: { pages: Page[] }) {
   );
 }
 
-export const overlayCreateSchema = z.object({
-  name: z.string().min(3).max(20),
-  type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]), // TODO: Use OverlayType enum
-  // metadata: z.record(z.string().min(1), z.union([z.string(), z.number()])),
-  metadata: z.string(),
-});
-
 const OverlayForm = () => {
   const router = useRouter();
   const utils = api.useContext();
@@ -119,10 +111,8 @@ const OverlayForm = () => {
 
   const onSubmit = methods.handleSubmit(
     (data) => {
-      // data["metadata"] = JSON.parse(data.metadata) as Record<string, string | number>;
       createOverlay.mutate({
         ...data,
-        metadata: JSON.parse(data.metadata) as Record<string, string | number>,
       });
     },
     (e) => {

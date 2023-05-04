@@ -67,18 +67,11 @@ const NewOverlay: NextPage = () => {
 
 export default NewOverlay;
 
-import { z } from "zod";
 import { useZodForm } from "../../../utils/zod-form";
 import { OverlayItemComponent } from "../../../components/OverlayItem";
 import type { Page } from "~/components/Breadcrumbs";
 import { Breadcrumbs } from "~/components/Breadcrumbs";
-
-export const overlayCreateSchema = z.object({
-  name: z.string().min(3).max(20),
-  type: z.enum(["SLIDES", "YOUTUBE_LIVE_CHAT"]), // TODO: Use OverlayType enum
-  // metadata: z.record(z.string().min(1), z.union([z.string(), z.number()])),
-  metadata: z.string(),
-});
+import { overlayCreateSchema } from "~/utils/schemas/overlay";
 
 const OverlayForm = ({
   overlay,
@@ -115,7 +108,6 @@ const OverlayForm = ({
       updateOverlay.mutate({
         ...data,
         id,
-        metadata: JSON.parse(data.metadata) as Record<string, string | number>,
       });
     },
     (e) => {
