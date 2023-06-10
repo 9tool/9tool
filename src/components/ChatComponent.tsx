@@ -75,6 +75,10 @@ export const ChatComponent = ({
               any
             >;
 
+            if (messageJSON.chat === undefined) {
+              return null;
+            }
+
             return (
               <MessageComponent
                 key={idx}
