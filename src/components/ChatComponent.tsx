@@ -129,14 +129,10 @@ const MessageComponent: React.FC<{ msg: MessageComponentProps }> = ({
 
   return (
     <div className="flex gap-1">
+      [{formattedTime}] <strong>{author.name}</strong>:{" "}
       {message.map((messageItem, index) => {
         if ("text" in messageItem) {
-          return (
-            <span key={index}>
-              [{formattedTime}] <strong>{author.name}</strong>:{" "}
-              {messageItem.text}
-            </span>
-          );
+          return <span key={index}>{messageItem.text}</span>;
         } else if ("url" in messageItem) {
           return (
             // eslint-disable-next-line @next/next/no-img-element
