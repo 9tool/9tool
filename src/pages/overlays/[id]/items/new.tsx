@@ -50,8 +50,8 @@ const NewOverlayItem: NextPage = () => {
 export default NewOverlayItem;
 
 import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
-import { z } from "zod";
 import { useZodForm } from "~/utils/zod-form";
+import { overlayItemCreateSchema } from "~/utils/schemas/overlayItem";
 
 interface Page {
   name: string;
@@ -92,11 +92,6 @@ function Breadcrumbs({ pages }: { pages: Page[] }) {
     </nav>
   );
 }
-
-export const overlayItemCreateSchema = z.object({
-  type: z.enum(["TEXT", "IMAGE"]),
-  value: z.string(),
-});
 
 const OverlayItemForm = () => {
   const router = useRouter();

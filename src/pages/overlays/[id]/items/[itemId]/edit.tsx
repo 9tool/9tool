@@ -49,15 +49,10 @@ const EditOverlayItem: NextPage = () => {
 
 export default EditOverlayItem;
 
-import { z } from "zod";
 import { useZodForm } from "~/utils/zod-form";
 import type { Page } from "~/components/Breadcrumbs";
 import { Breadcrumbs } from "~/components/Breadcrumbs";
-
-export const overlayItemSchema = z.object({
-  type: z.enum(["TEXT", "IMAGE"]),
-  value: z.string(),
-});
+import { overlayItemCreateSchema } from "~/utils/schemas/overlayItem";
 
 const OverlayItemForm = () => {
   const router = useRouter();
@@ -72,7 +67,7 @@ const OverlayItemForm = () => {
   );
 
   const methods = useZodForm({
-    schema: overlayItemSchema,
+    schema: overlayItemCreateSchema,
     values: {
       ...overlayItem!,
     },
